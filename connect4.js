@@ -17,30 +17,40 @@ const board = []; // array of rows, each row is array of cells  (board[y][x])
 
 function makeBoard() {
   // TODO: set "board" to empty HEIGHT x WIDTH matrix array
+  for (let i = 0; i < HEIGHT; i++){
+    for (let j = 0; j < WIDTH; j++){
+      if (!board[i]) {
+        board[i] = [];
+      }
+      board[i][j] = null;
+    }
+  }
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
-  // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
+  // get "htmlBoard" variable from the item in HTML w/ID of "board"
+  const htmlBoard = document.querySelector('table#board');
 
-  // TODO: add comment for this code
-  var top = document.createElement("tr");
+  // create the top table row (headers)
+  const top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
 
-  for (var x = 0; x < WIDTH; x++) {
-    var headCell = document.createElement("td");
-    headCell.setAttribute("id", x);
+  for (let x = 0; x < WIDTH; x++) {
+    let headCell = document.createElement("td");
+    headCell.setAttribute("id", x);   // assign id based on x position
     top.append(headCell);
   }
   htmlBoard.append(top);
 
-  // TODO: add comment for this code
-  for (var y = 0; y < HEIGHT; y++) {
+  // create the HEIGHT x WIDTH table
+  for (let y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
-    for (var x = 0; x < WIDTH; x++) {
+    for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement("td");
+      // assign id based on the (y,x) position
       cell.setAttribute("id", `${y}-${x}`);
       row.append(cell);
     }
