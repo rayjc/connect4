@@ -118,6 +118,7 @@ function handleClick(evt) {
 
   // check for win
   if (checkForWin()) {
+    document.querySelector('body').style.backgroundColor = getPlayerColor();
     return endGame(`Player ${currPlayer} won!`);
   }
 
@@ -180,6 +181,21 @@ function getPlayerColor() {
   return currPlayer === 1 ? 'red' : 'blue';
 }
 
+function reset(){
+  // reset in-memory board
+  for (let y = 0; y < HEIGHT; y++) {
+    for (let x = 0; x < WIDTH; x++) {
+      board[y][x] = null;
+    }
+  }
+  // reset HTML board
+  Array.from(document.querySelectorAll('td div.piece')).forEach((el) => el.remove());
+  // reset starting player
+  currPlayer = 1;
+  // reset background
+  document.querySelector('body').style.backgroundColor = '';
+}
+
 makeBoard();
 makeHtmlBoard();
 
@@ -193,10 +209,13 @@ document.querySelector('tr#column-top').addEventListener('mouseover', function(e
   );
   emptyColTds.forEach((td) => td.classList.add('highlight'));
 });
-
 document.querySelector('tr#column-top').addEventListener('mouseout', function(event){
   event.target.style.borderColor = '';
   // select the nth column
   const colTds = getTdsByCol(+event.target.id);
   colTds.forEach((td) => td.classList.remove('highlight'));
 });
+// add reset event
+document.querySelector('#restart').addEventListener('click', function(event){
+  reset();
+})

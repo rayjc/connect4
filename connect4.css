@@ -7,7 +7,23 @@
 }
 
 #game {
-  margin-top: 5%;
+  margin: 2% auto;
+}
+
+#setup {
+  text-align: center;
+}
+
+#restart {
+  border: 4px solid;
+  background-color: brown;
+  font-size: 30px;
+  letter-spacing: 3px;
+}
+
+#restart:hover{
+  opacity: 0.8;
+  cursor: pointer;
 }
 
 body {
@@ -54,6 +70,7 @@ table {
   background-color: transparent;
   background-image: url('static/saucer.jpg');
   background-size: 100px 100px;
+  cursor: pointer;
 }
 
 @keyframes dropin {
