@@ -97,7 +97,7 @@ function endGame(msg) {
   // delay alert after winning piece has been rendered
   setTimeout(function(){
     alert(msg);
-  }, 50);
+  }, 280);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -129,6 +129,8 @@ function handleClick(evt) {
   // switch players
   // switch currPlayer 1 <-> 2
   currPlayer = currPlayer === PLAYER[1] ? PLAYER[2] : PLAYER[1];
+  console.log(evt);
+  evt.target.style.borderColor = getPlayerColor();
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -169,5 +171,32 @@ function checkForWin() {
   }
 }
 
+function getTdsByCol(x){
+  const boardTrs = document.querySelectorAll('table tr:not([id])');
+  return Array.from(boardTrs).map((tr) => tr.children[x]);
+}
+
+function getPlayerColor() {
+  return currPlayer === 1 ? 'red' : 'blue';
+}
+
 makeBoard();
 makeHtmlBoard();
+
+// add hover effect on selected columns
+document.querySelector('tr#column-top').addEventListener('mouseover', function(event){
+  event.target.style.borderColor = getPlayerColor();
+  // select the nth column and only the unoccupied <td>
+  const emptyColTds = getTdsByCol(+event.target.id).filter(
+    (td) => !td.firstElementChild
+            || !td.firstElementChild.classList.contains('piece')
+  );
+  emptyColTds.forEach((td) => td.classList.add('highlight'));
+});
+
+document.querySelector('tr#column-top').addEventListener('mouseout', function(event){
+  event.target.style.borderColor = '';
+  // select the nth column
+  const colTds = getTdsByCol(+event.target.id);
+  colTds.forEach((td) => td.classList.remove('highlight'));
+});

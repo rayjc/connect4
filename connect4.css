@@ -1,22 +1,40 @@
 /* game board table */
 
 #board td {
-  width: 50px;
-  height: 50px;
-  border: solid 1px #666;
+  width: 100px;
+  height: 100px;
+  border: solid 3px #666;
+}
+
+#game {
+  margin-top: 5%;
+}
+
+body {
+  background-color: #303030;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(66, 38, 0);
 }
 
 /* pieces are div within game table cells: draw as colored circles */
 
 .piece {
-  /* TODO: make into circles */
   margin: 5px;
   width: 80%;
   height: 80%;
   border-radius: 50%;
+  animation: 300ms linear 0s 1 running dropin;
 }
 
-/* TODO: make pieces red/blue,  depending on player 1/2 piece */
+.highlight {
+  background-color: rgb(255, 255, 100);
+  opacity: 0.5;
+}
+
 .player-1 {
   background-color: red;
 }
@@ -28,9 +46,16 @@
 /* column-top is table row of clickable areas for each column */
 
 #column-top td {
-  border: dashed 1px lightgray;
+  border-bottom: ridge 3px lightgray;
+  background-color: #202020;
 }
 
 #column-top td:hover {
-  background-color: gold;
+  background-color: transparent;
+  background-image: url('static/saucer.jpg');
+  background-size: 100px 100px;
+}
+
+@keyframes dropin {
+  from { margin-top: -200%; } to { margin-bottom: 0%; }
 }
