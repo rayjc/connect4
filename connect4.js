@@ -7,11 +7,8 @@
 
 const WIDTH = 7;
 const HEIGHT = 6;
-const PLAYER = {
-  1: 1, 
-  2: 2
-};
 
+let isOver = false;
 let currPlayer = 1; // active player: 1 or 2
 const board = []; // array of rows, each row is array of cells  (board[y][x])
 
@@ -29,6 +26,10 @@ function makeBoard() {
       board[y][x] = null;
     }
   }
+}
+
+function createPosId(y,x){
+  return `${y}-${x}`;
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
@@ -55,7 +56,7 @@ function makeHtmlBoard() {
     for (let x = 0; x < WIDTH; x++) {
       const cell = document.createElement("td");
       // assign id based on the (y,x) position
-      cell.setAttribute("id", `${y}-${x}`);
+      cell.setAttribute("id", createPosId(y, x));
       row.append(cell);
     }
     htmlBoard.append(row);
@@ -78,10 +79,10 @@ function findSpotForCol(x) {
 function placeInTable(y, x) {
   // make a div and insert into correct table cell
   //const relTd = document.querySelector(`td#\\3${y}-${x}`);
-  const relTd = document.getElementById(`${y}-${x}`);
+  const relTd = document.getElementById(createPosId(y, x));
   console.assert(
     !relTd.querySelector('.piece'),
-    `td#${y}-${x} should not include a piece already!`
+    `td#${createPosId(y, x)} should not include a piece already!`
   );
   const newDiv = document.createElement('div');
   newDiv.classList.add('piece');
@@ -94,6 +95,7 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
   // pop up alert message
+  isOver = true;
   // delay alert after winning piece has been rendered
   setTimeout(function(){
     alert(msg);
@@ -103,6 +105,11 @@ function endGame(msg) {
 /** handleClick: handle click of column top to play piece */
 
 function handleClick(evt) {
+  // exit early
+  if (isOver){
+    return;
+  }
+
   // get x from ID of clicked cell
   const x = +evt.target.id;   // convert id string to number
 
@@ -125,12 +132,11 @@ function handleClick(evt) {
   // check for tie
   // check if all cells in board are filled; if so call, call endGame
   if (board.every((rows) => rows.every((el) => !!el)))
-    endGame();
+    endGame("Sorry it's a tie!");
 
   // switch players
   // switch currPlayer 1 <-> 2
-  currPlayer = currPlayer === PLAYER[1] ? PLAYER[2] : PLAYER[1];
-  console.log(evt);
+  currPlayer = currPlayer === 1 ? 2 : 1;
   evt.target.style.borderColor = getPlayerColor();
 }
 
@@ -194,6 +200,8 @@ function reset(){
   currPlayer = 1;
   // reset background
   document.querySelector('body').style.backgroundColor = '';
+  // reset flag
+  isOver = false;
 }
 
 makeBoard();
